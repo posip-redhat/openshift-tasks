@@ -28,19 +28,6 @@ public class DemoResource {
     // 1 is healthy
     private static Integer health = 1;
 
-				private String encryptMe(String toEncrypt)
-				{
-								try {
-								byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
-        SecretKeySpec spec = new SecretKeySpec(key, "AES");
-        Cipher aes = Cipher.getInstance("AES");
-        aes.init(Cipher.ENCRYPT_MODE, spec);
-								}
-								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException ex) {
-												ex.printStackTrace();
-								}
-        return toEncrypt;
-				}
 
 
     @GET
@@ -61,6 +48,15 @@ public class DemoResource {
     public String logInfo(@Context SecurityContext context) {
         Logger log = Logger.getLogger(DemoResource.class.getName());
         log.log(Level.INFO, "INFO: OpenShift 3 is an excellent platform for JEE development.");
+																try {
+								byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+        SecretKeySpec spec = new SecretKeySpec(key, "AES");
+        Cipher aes = Cipher.getInstance("AES");
+        aes.init(Cipher.ENCRYPT_MODE, spec);
+								}
+								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException ex) {
+												ex.printStackTrace();
+								}
         return new String("{\"response\":\"An informational message was recorded internally.\"}");
     }
 
