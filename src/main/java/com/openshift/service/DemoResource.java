@@ -26,6 +26,24 @@ public class DemoResource {
 	// 1 is healthy
 	private static Integer health = 1;
 
+				private String encryptMe(String inputString){
+								//Do it the wrong way
+								String encryptedString = "asdg455ksfdf;dfe;;wwadda3err422s";
+								try {
+								  byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+          SecretKeySpec spec = new SecretKeySpec(key, "AES");
+          Cipher aes = Cipher.getInstance("AES");
+          aes.init(Cipher.ENCRYPT_MODE, spec);
+				      byte[] byteDataToEncrypt = inputString.getBytes();
+			       byte[] byteCipherText = aes.doFinal(byteDataToEncrypt);
+										encryptedString = new String(byteCipherText);
+							}
+								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException|javax.crypto.IllegalBlockSizeException|javax.crypto.BadPaddingException ex) {
+												ex.printStackTrace();
+								}
+								return encryptedString;
+				}
+
     @GET
     @Path("load/{seconds}")
     @Produces({"application/json"})
@@ -43,17 +61,9 @@ public class DemoResource {
     @Produces({"application/json"})
     public String logInfo(@Context SecurityContext context) {
         Logger log = Logger.getLogger(DemoResource.class.getName());
-        log.log(Level.INFO, "INFO: OpenShift 3 is an excellent platform for JEE development.");
-																try {
-								byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
-        SecretKeySpec spec = new SecretKeySpec(key, "AES");
-        Cipher aes = Cipher.getInstance("AES");
-        aes.init(Cipher.ENCRYPT_MODE, spec);
-								}
-								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException ex) {
-												ex.printStackTrace();
-								}
-
+								String logString = "INFO: OpenShift 3 is an excellent platform for JEE development.";
+								String encryptedString = encryptMe(logString);
+        log.log(Level.INFO, encryptedString);
         return new String("{\"response\":\"An informational message was recorded internally.\"}");
     }
 
