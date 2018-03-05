@@ -154,6 +154,10 @@
                     <td>Session ID</td>
                     <td><%= session.getId() %></td>
                   </tr>
+                  <tr role="row" class="odd">
+                    <td>Version ID</td>
+                    <td>NEW VERSION</td>
+                  </tr>
                 </table>
               </div>
             </div>
