@@ -156,7 +156,7 @@
                   </tr>
                   <tr role="row" class="odd">
                     <td>Version ID</td>
-                    <td>NEW VERSION</td>
+                    <td>OLD VERSION</td>
                   </tr>
                 </table>
               </div>
