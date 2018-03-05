@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.Cipher;
+
+
 /**
  * A JAX-RS resource for exposing REST endpoints for Task manipulation
  */
@@ -23,6 +27,21 @@ public class DemoResource {
     // application instance health
     // 1 is healthy
     private static Integer health = 1;
+
+				private String encryptMe(String toEncrypt)
+				{
+								try {
+								byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+        SecretKeySpec spec = new SecretKeySpec(key, "AES");
+        Cipher aes = Cipher.getInstance("AES");
+        aes.init(Cipher.ENCRYPT_MODE, spec);
+								}
+								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException ex) {
+												ex.printStackTrace();
+								}
+        return toEncrypt;
+				}
+
 
     @GET
     @Path("load/{seconds}")
