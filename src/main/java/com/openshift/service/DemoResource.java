@@ -14,12 +14,14 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.crypto.spec.SecretKeySpec;
+import javax.crypto.Cipher;
 /**
  * A JAX-RS resource for exposing REST endpoints for Task manipulation
  */
 @Path("demo")
 public class DemoResource {
-	
+
 	// application instance health
 	// 1 is healthy
 	private static Integer health = 1;
@@ -42,6 +44,16 @@ public class DemoResource {
     public String logInfo(@Context SecurityContext context) {
         Logger log = Logger.getLogger(DemoResource.class.getName());
         log.log(Level.INFO, "INFO: OpenShift 3 is an excellent platform for JEE development.");
+																try {
+								byte[] key = {1, 2, 3, 4, 5, 6, 7, 8};
+        SecretKeySpec spec = new SecretKeySpec(key, "AES");
+        Cipher aes = Cipher.getInstance("AES");
+        aes.init(Cipher.ENCRYPT_MODE, spec);
+								}
+								catch (java.security.NoSuchAlgorithmException|java.security.InvalidKeyException|javax.crypto.NoSuchPaddingException ex) {
+												ex.printStackTrace();
+								}
+
         return new String("{\"response\":\"An informational message was recorded internally.\"}");
     }
 
@@ -74,7 +86,7 @@ public class DemoResource {
     		health = 0;
     		Logger log = Logger.getLogger(DemoResource.class.getName());
             log.log(Level.SEVERE, "ERROR: I'm not feeling so well.");
-            return new String("{\"response\":\"The app is starting to look a little ill...\"}");	
+            return new String("{\"response\":\"The app is starting to look a little ill...\"}");
     	} else {
     		// become healthy
     		health = 1;
@@ -90,14 +102,14 @@ public class DemoResource {
     public void killSwitch(@Context SecurityContext context) throws IOException {
     	Logger log = Logger.getLogger(DemoResource.class.getName());
         log.log(Level.SEVERE, "ERROR: Going down NOW!");
-        Runtime.getRuntime().halt(255);       
+        Runtime.getRuntime().halt(255);
 	}
 
     @GET
     @Path("healthcheck/")
     @Produces({"application/json"})
     public Response checkHealth(@Context SecurityContext context) throws IOException {
-    	
+
     	String response = new String("{\"response\":\"Health Status: " + health + "\", \"health\": " + health + "}");
 
     	// if health is 1, return 200, otherwise 500
@@ -106,6 +118,6 @@ public class DemoResource {
     	} else {
     		return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(response).build();
     	}
-    	
+
     }
 }
