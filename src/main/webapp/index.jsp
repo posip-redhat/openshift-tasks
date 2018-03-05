@@ -151,6 +151,10 @@
                     <td><%= (Runtime.getRuntime().totalMemory()) / mb %> MB</td>
                   </tr>
                   <tr role="row" class="even">
+                    <td>Version</td>
+                    <td>NEW V.2</td>
+                  </tr>
+                  <tr role="row" class="odd">
                     <td>Session ID</td>
                     <td><%= session.getId() %></td>
                   </tr>
